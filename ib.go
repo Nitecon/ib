@@ -39,12 +39,14 @@ func (b *IB) processPortfolioMsg(d string) {
 
 // ProcessReceiver is one of the main reciever functions that interprets data received by IQFeed and processes it in sub functions.
 func (b *IB) processReceiver(d string) {
-	data := d[2:]
+	/*data := d[2:]
 	switch d[0] {
 
 	case 0x50: // Start letter is P, indicating a summary message.
-		b.processPortfolioMsg(data)
-	}
+	*/
+	data := d
+	b.processPortfolioMsg(data)
+	//}
 
 }
 
@@ -63,6 +65,7 @@ func (b *IB) read() {
 			if err == nil {
 				d := strings.TrimRight(str, DELIM_STR)
 				fmt.Printf(d)
+				b.processReceiver(d)
 			}
 			if err != nil {
 				log.Printf("Could not read: %s", err)

@@ -1,7 +1,6 @@
 package ib
 
 import (
-	"fmt"
 	"log"
 	"math/rand"
 	"net"
@@ -46,9 +45,14 @@ func (b *IB) connect(cs string) error {
 	b.Conn = conn
 	b.ClientId = NextClientId()
 	go b.read()
-	b.Conn.Write([]byte(fmt.Sprintf("%d%s", 63, DELIM_BYTE)))
-	b.Conn.Write([]byte(fmt.Sprintf("%d%s", NextClientId(), DELIM_BYTE)))
+	/*b.Conn.Write([]byte(fmt.Sprintf("%d%s", 63, DELIM_BYTE)))
+	b.Conn.Write([]byte(fmt.Sprintf("%d%s", NextClientId(), DELIM_BYTE)))*/
+	log.Println("Starting handshake...")
+	err = b.ServerShake(63)
 
+	if err != nil {
+		log.Printf("Handshake failed : %s", err)
+	}
 	return err
 	// FOrmatting ints : strconv.FormatInt(i, 10)
 
